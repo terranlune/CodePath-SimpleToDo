@@ -6,5 +6,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="enter_new_item">Enter New Item</string>
     <string name="add">Add</string>
+    <string name="title_activity_edit_item">Edit Item</string>
+    <string name="edit_item_below">Edit Item Below:</string>
+    <string name="save">Save</string>
+    <string name="enter_text">Enter Text</string>
 
 </resources>

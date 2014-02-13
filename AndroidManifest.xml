@@ -22,6 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="codepath.apps.simpletodo.EditItemActivity"
+            android:label="@string/title_activity_edit_item"
+            android:parentActivityName="codepath.apps.simpletodo.TodoActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="codepath.apps.simpletodo.TodoActivity" />
+        </activity>
     </application>
 
 </manifest>

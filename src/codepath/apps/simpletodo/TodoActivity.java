@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import org.apache.commons.io.FileUtils;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -18,6 +20,7 @@ import android.widget.ListView;
 public class TodoActivity extends Activity {
 
 	private static final String TODO_FILENAME = "todo.txt";
+	protected static final int EDIT_ITEM_REQUEST_CODE = 47;
 	ArrayList<String> items;
 	ArrayAdapter<String> itemsAdapter;
 	ListView lvItems;
@@ -32,10 +35,10 @@ public class TodoActivity extends Activity {
 		itemsAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, items);
 		lvItems.setAdapter(itemsAdapter);
-		setupListViewListener();
+		setupListViewListeners();
 	}
 
-	private void setupListViewListener() {
+	private void setupListViewListeners() {
 		lvItems.setOnItemLongClickListener(new OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> aView, View item, int pos, long id) {
@@ -45,6 +48,29 @@ public class TodoActivity extends Activity {
 				return true;
 			}
 		});
+		lvItems.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> aView, View item, int pos, long id) {
+				Intent i = new Intent(TodoActivity.this, EditItemActivity.class);
+				i.putExtra("position", pos);
+				i.putExtra("text", aView.getItemAtPosition(pos).toString());
+				startActivityForResult(i, EDIT_ITEM_REQUEST_CODE);
+			}
+		});
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK && requestCode == EDIT_ITEM_REQUEST_CODE) {
+			String text = data.getExtras().getString("text");
+			int position = data.getExtras().getInt("position");
+			try {
+				items.set(position, text);
+			} catch (IndexOutOfBoundsException e) {
+				e.printStackTrace();
+			}
+			itemsAdapter.notifyDataSetChanged();
+		}
 	}
 	
 	public void addTodoItem(View v) {
